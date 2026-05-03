@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ – Traveos</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #2B3FE8;
+      --blue-dark:  #1F30C4;
+      --blue-light: #EEF1FD;
+      --gray-text:  #444;
+      --border:     #DDE1F0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #F4F6FB;
+      color: var(--gray-text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────────── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: -0.3px;
+    }
+
+    /* ── Hero ────────────────────────────────────────────── */
+    .hero {
+      background: var(--blue);
+      padding: 52px 24px 80px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      color: #fff;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.80);
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+
+    .search-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9AA0C4;
+      pointer-events: none;
+    }
+
+    #search {
+      width: 100%;
+      padding: 14px 16px 14px 46px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      outline: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      color: #222;
+    }
+
+    #search::placeholder { color: #9AA0C4; }
+
+    /* ── Main content ────────────────────────────────────── */
+    main {
+      max-width: 760px;
+      margin: -40px auto 60px;
+      padding: 0 20px;
+    }
+
+    /* ── Category ────────────────────────────────────────── */
+    .category {
+      margin-bottom: 28px;
+    }
+
+    .category-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--blue);
+      margin-bottom: 10px;
+      padding-left: 4px;
+    }
+
+    /* ── FAQ Card ────────────────────────────────────────── */
+    .faq-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 8px;
+      transition: box-shadow 0.2s;
+    }
+
+    .faq-card:hover { box-shadow: 0 2px 12px rgba(43,63,232,0.10); }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+      transition: background 0.15s;
+    }
+
+    .faq-question:hover { background: var(--blue-light); }
+
+    .faq-question.open { color: var(--blue); background: var(--blue-light); }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      background: var(--blue-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s, background 0.15s;
+    }
+
+    .faq-question.open .faq-icon {
+      transform: rotate(180deg);
+      background: var(--blue);
+    }
+
+    .faq-question.open .faq-icon svg { color: #fff; }
+
+    .faq-answer {
+      display: none;
+      padding: 0 20px 18px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #555;
+      border-top: 1px solid var(--border);
+    }
+
+    .faq-answer.open { display: block; }
+
+    /* ── No results ──────────────────────────────────────── */
+    #no-results {
+      display: none;
+      text-align: center;
+      padding: 48px 0;
+      color: #888;
+      font-size: 15px;
+    }
+
+    #no-results svg { display: block; margin: 0 auto 12px; color: #ccc; }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: #aaa;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────── -->
+<header>
+  <img src="logo.jpeg" class="logo-icon" alt="Traveos" />
+  <span class="logo-text">Traveos</span>
+</header>
+
+<!-- ── Hero ────────────────────────────────────────────── -->
+<div class="hero">
+  <h1>Central de Ajuda</h1>
+  <p>Encontre respostas rápidas sobre o sistema Traveos</p>
+  <div class="search-wrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input id="search" type="search" placeholder="Pesquisar perguntas..." autocomplete="off" />
+  </div>
+</div>
+
+<!-- ── FAQ Content ──────────────────────────────────────── -->
+<main>
+
+  <div id="no-results">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    Nenhuma pergunta encontrada para "<strong id="search-term"></strong>"
+  </div>
+
+  <!-- MILHAS -->
+  <div class="category" data-category>
+    <div class="category-title">Milhas</div>
+
+    <div class="faq-card">
+      <button class="faq-question" aria-expanded="false">
+        Como cadastrar meu estoque inicial de milhas?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <p>Existem duas formas de cadastrar o estoque inicial, dependendo se o CPF já está registrado no sistema:</p>
+        <br/>
+        <p><strong>CPF ainda não cadastrado:</strong> acesse <strong>Milhas &gt; CPFs Fidelizados</strong> e crie um novo CPF. Na segunda etapa do cadastro você encontrará a opção para adicionar os estoques iniciais de cada programa.</p>
+        <br/>
+        <p><strong>CPF já cadastrado:</strong> localize o CPF na listagem, clique nos três pontos (⋯) à direita e selecione <strong>Editar</strong>. Na segunda etapa do formulário você poderá incluir ou atualizar os estoques iniciais.</p>
+      </div>
+    </div>
+
+    <div class="faq-card">
+      <button class="faq-question" aria-expanded="false">
+        Como ver o estoque de uma conta?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        Acesse <strong>Milhas &gt; Estoque &gt; Contas Detalhadas</strong>. Lá você visualiza cada conta separadamente, com o saldo discriminado por programa de fidelidade e titular.
+      </div>
+    </div>
+
+    <div class="faq-card">
+      <button class="faq-question" aria-expanded="false">
+        Como altero o limite de CPFs nas minhas contas?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        Acesse <strong>Milhas &gt; Controle de CPFs</strong>. Lá você visualiza os limites pré-estabelecidos pelos programas de fidelidade e pode ajustar o seu próprio controle de acordo com a sua operação.
+      </div>
+    </div>
+
+    <div class="faq-card">
+      <button class="faq-question" aria-expanded="false">
+        Onde posso dar baixa nos meus clubes?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        Acesse <strong>Milhas &gt; Clubes &gt; Pendências</strong>. Lá você encontrará todos os clubes com baixa pendente e poderá registrá-las.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CLIENTES -->
+  <div class="category" data-category>
+    <div class="category-title">Clientes</div>
+
+    <div class="faq-card">
+      <button class="faq-question" aria-expanded="false">
+        Como cadastrar uma agência para registrar uma venda para ela?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        Acesse <strong>Clientes &gt; Compradores</strong>. Lá você pode buscar agências que já estão cadastradas no sistema ou adicionar uma nova caso ela ainda não conste na base.
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  &copy; 2025 Traveos &mdash; Todos os direitos reservados
+</footer>
+
+<script>
+  // Accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const answer = btn.nextElementSibling;
+      const isOpen = btn.classList.contains('open');
+
+      // close all in same category
+      btn.closest('[data-category]').querySelectorAll('.faq-question').forEach(b => {
+        b.classList.remove('open');
+        b.setAttribute('aria-expanded', 'false');
+        b.nextElementSibling.classList.remove('open');
+      });
+
+      if (!isOpen) {
+        btn.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        answer.classList.add('open');
+      }
+    });
+  });
+
+  // Search
+  const searchInput = document.getElementById('search');
+  const noResults   = document.getElementById('no-results');
+  const searchTerm  = document.getElementById('search-term');
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    let visible = 0;
+
+    document.querySelectorAll('.faq-card').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const show = !q || text.includes(q);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // hide empty categories
+    document.querySelectorAll('[data-category]').forEach(cat => {
+      const anyVisible = [...cat.querySelectorAll('.faq-card')].some(c => c.style.display !== 'none');
+      cat.style.display = anyVisible ? '' : 'none';
+    });
+
+    searchTerm.textContent = q;
+    noResults.style.display = (q && visible === 0) ? 'block' : 'none';
+  });
+</script>
+</body>
+</html>
